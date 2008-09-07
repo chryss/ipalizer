@@ -1,0 +1,79 @@
+<html>
+<head>
+<style type="text/css">
+body {
+  font-family: "Tahoma", "Verdana", sans-serif;
+}
+form.cmxform {
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+form.cmxform fieldset {
+  margin-bottom: 10px;
+}
+form.cmxform legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+form.cmxform label {
+  display: inline-block;
+  line-height: 1.8;
+  vertical-align: top;
+}
+form.cmxform fieldset ol {
+  margin: 0;
+  padding: 0;
+}
+form.cmxform fieldset li {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+}
+form.cmxform fieldset fieldset {
+  border: none;
+  margin: 3px 0 0;
+}
+form.cmxform em {
+  font-weight: bold;
+  font-style: normal;
+  color: #f00;
+}
+form.cmxform input#submit {
+  margin-left: 370px;
+}
+form.cmxform label {
+  width: 180px; /* Width of labels */
+}
+form.cmxform input.text {
+  width: 250px; /* Width of input */
+}
+</style>
+</head>
+<body>
+<form class="cmxform" name="CFW_Miniform">
+<fieldset>
+  <legend>Test for Miniforms</legend>
+  <ol>
+    <li>
+      <label for="firstname">Firstname<em>*</em></label>
+      <input class="text" id="firstname" name="firstname"/>
+    </li>
+    <li>
+      <label for="lastname">Lastname<em>*</em></label>
+      <input class="text" id="lastname" name="lastname"/>
+    </li>
+    <li>
+      <label for="emailaddress">Email address<em>*</em></label>
+      <input class="text" id="emailaddress" name="emailaddress" />
+    </li>
+    <li>
+      <label for="address2">Subscribe to test list</label>
+      <input type="checkbox" name="chrisw_test" id="chrisw_test" />
+    </li>
+  </ol>
+<input name="submit" id="submit" type="submit" value="submit">
+</fieldset>
+</form>
+</body>
+</html>
