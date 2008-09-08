@@ -4,5 +4,7 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /css
+  static_dir: css
 - url: /.*
   script: ipalizer.py

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import cgi
+import os
 from UserList import UserList
 
 from google.appengine.ext import webapp
 from google.appengine.ext import db
+from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 # dictionary mapping MW-style phonetics to IPA
@@ -36,18 +38,20 @@ MWtoIPA = {
 	u'i': u'\u026a',
 	u'j': u'd\u0292',
 	u'k': u'k',
-	u'k\u0331': u'x',
+	u'k\u0331': u'x',								# LATIN SMALL LETTER K WITH LINE BELOW
+	u'\u1e35': u'x',
 	u'l': u'l',
 	u'm': u'm',
 	u'n': u'n',
 	u'o\u0307': u'\u0254',
 	u'o\u0307i': u'\u0254\u026a',
+	u'\u022f': u'\u0254',						# LATIN SMALL LETTER O WITH DOT ABOVE (!!)
 	u'p': u'p',
 	u'r': u'\u0279',
 	u's': u's',
 	u'sh': u'\u0283',
 	u't': u't',
-	u'th': u'[\u03b8|\u00f0]', 							# theta - unvoiced TH. MW does not distinguish
+	u'th': u'[\u03b8|\u00f0]', 			# theta - unvoiced TH. MW does not distinguish
 	u'u\u0307': u'\u028a',
 	u'ü': u'u',
 	u'v': u'v',
@@ -88,7 +92,7 @@ lookaheads = dict([(char, firstcharfreq[char]) for char in firstcharfreq.keys() 
 class PhoneticsPair(db.Model):
 	"""Saves phonetic string pairs to datastore.
 	
-	fromstyle, tostyle: IPA, MW, KB...
+	instyle, outstyle: IPA, MW, KB...
 	"""
 	instring = db.StringProperty(multiline=True)
 	outstring = db.StringProperty(multiline=True)
@@ -99,11 +103,11 @@ class PhoneticsPair(db.Model):
 class Phonetics(UserList):
 	"""Stores phonetic transcription as list of tokens.
 	
-	inputstring: byte string
+	inputstring: unicode string
 	data attribute is token list from input string
 	IPA attribute is IPA transcription
 	"""
-	def __init__(self,inputstring,style='MW'):
+	def __init__(self,inputstring='',style='MW'):
 		self.data = []
 		self.data, self.warning = tokenize(inputstring,style)
 		self.inputstyle = style
@@ -130,7 +134,7 @@ def IPAlize(tokens,style='MW'):
 
 def tokenize(inputstring,style='MW'):
 	"""Converts input string into list of unicode tokens"""
-	charstring = inputstring.decode('utf8')
+	charstring = inputstring
 	tokens = []
 	warning = ""
 	while(charstring):
@@ -148,6 +152,8 @@ def tokenize(inputstring,style='MW'):
 			
 def nextmatch(string, keys):
 		"""Returns longest key that matches start of string or None
+		
+		helper function for tokenize()
 		"""
 		longest = None
 		for i in range(len(string)):
@@ -159,40 +165,64 @@ def nextmatch(string, keys):
 						longest = substr
 		return longest
 	
-def ipale(bytestring, debug=False):
+def ipale(instring, debug=False):
 	"""Wraps Phonetics class to return utf-8 string from imput string
 	
 	mostly for testing, or direct translation
 	"""
-	phonetics = Phonetics(bytestring)
-	IPAstring = phonetics.toIPA()
+	phonetics = Phonetics(instring)
+	IPAchars = phonetics.toIPA()
 	if debug:
-		return IPAstring, phonetics.warning
+		return IPAchars, phonetics.warning
 	else:
-		return IPAstring
+		return IPAchars
 	
 class MainPage(webapp.RequestHandler):
 	def get(self):
-		self.response.out.write("""
-			<html><body>
-				<h1>Nothing yet to see here</h1>
-				<h2>This is still a placeholder page.</h2>
-				<p>Take a look at <a href='test'>the test page</a> meanwhile, there may be something there.
-				</body>
-				</html>
-			""")
+
+		phonetics = Phonetics('')
+		navid01, navid02, navid03, navid04 = 'id="current"', '', '', ''
+		
+		template_values = {
+		'navid01': navid01,
+		'navid02': navid02,
+		'navid03': navid03,
+		'navid04': navid04,
+		'phonetics': phonetics
+		}
+
+		path = os.path.join(os.path.dirname(__file__), 'index_template.html')
+		self.response.out.write(template.render(path, template_values))
 			
 class PhoneticsInput(webapp.RequestHandler):
 	def post(self):
-		phoneticspair = PhoneticsPair()
+		instring = self.request.get('content')
+		phonetics = Phonetics(instring)
+		IPA = phonetics.toIPA()
+		outstring = ''.join(IPA).encode('utf8')
 
-		phoneticspair.instring = self.request.get('content')
-		phoneticspair.put()
-		self.redirect('/')
+		navid01, navid02, navid03, navid04 = 'id="current"', '', '', ''
+		
+		template_values = {
+		'navid01': navid01,
+		'navid02': navid02,
+		'navid03': navid03,
+		'navid04': navid04,
+		'instring': 'MW: ' + instring,
+		'outstring': 'IPA: ' + outstring,
+		'phonetics': phonetics,
+		}
+
+		path = os.path.join(os.path.dirname(__file__), 'index_template.html')
+		self.response.out.write(template.render(path, template_values))
+		
+#		self.redirect('/')
 		
 class Datatest(webapp.RequestHandler):
 	def get(self):
 		self.response.out.write("""
+			<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+			"http://www.w3.org/TR/html4/strict.dtd">
 			<html><body>
 				<h1>Test Page</h1>
 				<h2>Merriam-Webster to IPA output for testdata</h2>
@@ -200,13 +230,13 @@ class Datatest(webapp.RequestHandler):
 		""")
 		fh = open('data/testdata.txt', 'rU')
 		for line in fh:
-			input = line.strip()
+			input = line.strip().decode('utf8')
 			output, warning = ipale(input, debug=True)
 			if warning:
 				warning = '      (WARNING: ' + warning + ')'
 			self.response.out.write("""
 				<li>%s ==> %s  %s</li>
-			""" % (input, ''.join(output).encode('utf8'), warning)) 
+			""" % (input, ''.join(output), warning)) 
 		self.response.out.write("""
 			</ol></body></html>
 		""")

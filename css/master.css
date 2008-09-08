@@ -1,0 +1,172 @@
+# Master Stylesheet
+# Chris Waigl 2008-09-07
+
+## basics
+* {
+	margin:0;
+	padding:0;
+}
+body {
+  font-family: "Calibri", "Gill Sans", Tahoma, Verdana, sans-serif;
+	font-size: 16px;
+	line-height: 1.4;
+}
+h1, h2, h4, h5, h6, pre, code {
+	font-size: 1em;
+}
+:link, :visited, :hover {
+	
+}
+a img, :link img, :visited img, :hover img {
+	background:transparent none repeat scroll 0 0;
+	border:medium none;
+	text-decoration:none;
+}
+ul {
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+}
+ul, ol, dl {
+	margin-bottom:1em;
+}
+li, dd {
+	line-height:1.4;
+	margin-left:2em;
+}
+pre, code {
+	font-family: Consolas, "Bitstream Vera Sans Mono", monospace;
+}
+}
+h1, h2, h4, h5, h6, pre, code {
+	font-size: 1em;
+}
+:link, :visited, :hover {
+	text-decoration:none;
+}
+a img, :link img, :visited img, :hover img {
+	background:transparent none repeat scroll 0 0;
+	border:medium none;
+	text-decoration:none;
+}
+ul {
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+}
+ul, ol, dl {
+	margin-bottom:1em;
+}
+li, dd {
+	line-height:1.4;
+	margin-left:2em;
+}
+
+## form basics
+form.cmxform {
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+form.cmxform fieldset {
+  margin-bottom: 10px;
+}
+form.cmxform legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+form.cmxform label {
+#  display: inline-block;
+  line-height: 1.8;
+  vertical-align: top;
+}
+form.cmxform fieldset ol {
+  margin: 0;
+  padding: 0;
+}
+form.cmxform fieldset li {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+}
+form.cmxform em {
+  font-weight: bold;
+  font-style: normal;
+  color: #f00;
+}
+form.cmxform input#submit {
+  margin: 10px 5px;
+  display: block;
+}
+form.cmxform label {
+#  width: 180px; /* Width of labels */
+}
+form.cmxform input.text {
+  width: 250px; /* Width of input */
+}
+form.cmxform textarea {
+	width: 50%;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+## navigation tabs
+#navcontainer {
+	width: 800px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#navlist
+{
+	padding: 3px 0;
+	margin-left: 0;
+	border-bottom: 1px solid #778;
+#	font: bold 12px Verdana, sans-serif;
+}
+
+#navlist li
+{
+	list-style: none;
+	margin: 0;
+	display: inline;
+}
+
+#navlist li a
+{
+	padding: 3px 0.5em;
+	margin-left: 3px;
+	border: 1px solid #778;
+	border-bottom: none;
+	background: #DDE;
+	text-decoration: none;
+}
+
+#navlist li a:link { color: #448; }
+#navlist li a:visited { color: #667; }
+
+#navlist li a:hover {
+	color: #000;
+	background: #AAE;
+	border-color: #227;
+}
+
+#navlist li a#current
+{
+	background: white;
+	border-bottom: 1px solid white;
+}
+
+/* specifics */
+#main {
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.IPA {
+	font-family: 'Gentium', 'Lucida Sans Unicode', 'Arial Unicode MS', sans-serif;
+}
+p#output .IPA  {
+	font-size: 550%;
+}

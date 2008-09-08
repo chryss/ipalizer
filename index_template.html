@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta name="http-equiv" content="text/html; charset=utf-8">
-		<link rel="stylesheet" href="./master.css" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" href="/css/master.css" type="text/css" media="screen" charset="utf-8">
 		<title></title>
 	</head>
 	<body>
@@ -15,16 +15,16 @@
 		<div id="navcontainer">
 			<ul id="navlist">
 				<li id="active">
-					<a href="#" {{ navid01 }} name="current">Item one</a>
+					<a href="#" {{ navid01 }} name="current">IPAlize</a>
 				</li>
 				<li>
-					<a href="#" {{ navid02 }} >Item two</a>
+					<a href="/test" {{ navid02 }} >Testdata</a>
 				</li>
 				<li>
-					<a href="#" {{ navid03 }} >Item three</a>
+					<a href="#" {{ navid03 }} >Mission Statement</a>
 				</li>
 				<li>
-					<a href="#" {{ navid04 }} >Item four</a>
+					<a href="#" {{ navid04 }} >API</a>
 				</li>
 			</ul>
 		</div>
@@ -34,6 +34,9 @@
 					<textarea class="IPA" id="content" name="content" rows="3" cols="80"></textarea>
 					<input type="submit" id='submit' name='submit' value="To IPA">
 			</form>
+			<div id='output' class='IPA' >
+				{{ instring }}
+	  	</div>
 			<div id='output' class='IPA' >
 				{{ outstring }}
 	  	</div>
